@@ -14,10 +14,14 @@ pub const HelloImpl = blk: {
     break :blk root.HelloInterface;
 };
 
+//Helper function to check our full interface
 fn checkInterface(comptime T: type) void {
     assertDeclType(T, "helloWorld", fn (allocator: Allocator, name: []const u8) callconv(.Inline) Allocator.Error![]u8);
+    // ...
+    // ...
 }
 
+//helper function to verify that the necessary functions have the necessary types
 fn assertDeclType(comptime T: anytype, comptime name: []const u8, comptime decl_sig: type) void {
     if (!@hasDecl(T, name)) {
         @compileError("HelloInterface missing declaration: " ++ name);
@@ -28,6 +32,7 @@ fn assertDeclType(comptime T: anytype, comptime name: []const u8, comptime decl_
     }
 }
 
+//The library code uses the user defined code like so
 pub const Lib = struct {
     pub fn helloFromLib(allocator: Allocator, name: []const u8) Allocator.Error![]u8 {
         return try HelloImpl.helloWorld(allocator, name);
